@@ -1,5 +1,10 @@
 # pydantic validation schemas
 # this file is for API endpoint validation
+# purpose of this file is to define the expected structure
+# of the data that will be sent to and from the API endpoints,
+# ensuring that the data adheres to the specified format and types.
+# This helps in validating incoming requests and structuring outgoing responses
+# in a consistent manner.
 
 from pydantic import BaseModel, Field
 from typing import List, Optional
