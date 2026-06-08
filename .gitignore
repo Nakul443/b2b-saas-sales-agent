@@ -1,4 +1,39 @@
+# ==============================================================================
+# Python Environment & Package Caches
+# ==============================================================================
 backend/venv/
-backend/__pycache__/
+backend/.venv/
+backend/env/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# ==============================================================================
+# Environment Secrets & Sensitive Credentials (CRITICAL)
+# ==============================================================================
 backend/.env
+backend/.env.*
+**/.env
+**/secrets.json
+
+# ==============================================================================
+# SQLite Databases & Transaction Logs
+# ==============================================================================
 backend/*.db
+backend/app/db/*.db
+backend/app/db/database.db
+
+# SQLite structural state tracking and rollback journals
+**/*.db-journal
+**/*.db-wal
+**/*.db-shm
+
+# ==============================================================================
+# IDE & System Specific Exclusions
+# ==============================================================================
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
