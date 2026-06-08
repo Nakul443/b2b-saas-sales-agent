@@ -1,0 +1,42 @@
+{
+  "company_name": "SaaSify Metrics OS",
+  "currency": "USD",
+  "plans": [
+    {
+      "name": "Starter",
+      "price": "$49/mo",
+      "billing_cycle": "monthly",
+      "features": [
+        "5 users maximum",
+        "Standard API access (up to 60 req/min)",
+        "Email support (24-hour turnaround time)"
+      ],
+      "target_audience": "Early stage setups, individual developers, and small teams tracking baseline metrics."
+    },
+    {
+      "name": "Growth",
+      "price": "$199/mo",
+      "billing_cycle": "monthly",
+      "features": [
+        "25 users maximum",
+        "Advanced API access (up to 300 req/min)",
+        "Webhooks support",
+        "Priority email and Discord server support (4-hour turnaround time)"
+      ],
+      "target_audience": "Rapidly scaling businesses needing real-time operational syncs and higher throughput."
+    },
+    {
+      "name": "Enterprise",
+      "price": "$499/mo",
+      "billing_cycle": "monthly",
+      "features": [
+        "Unlimited users",
+        "Unlimited API throughput with dedicated rate limits",
+        "Single Sign-On (SSO) authentication integration",
+        "Audit logs retention for security compliance",
+        "Dedicated Service Level Agreement (SLA) guaranteeing 99.99% uptime"
+      ],
+      "target_audience": "Large organizations demanding top-tier security compliance, user provisioning abstractions, and high availability guarantees."
+    }
+  ]
+}
