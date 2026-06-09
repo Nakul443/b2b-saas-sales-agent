@@ -8,7 +8,7 @@ import os
 from sqlalchemy.orm import Session
 from typing import Dict, Any
 
-from app.memory.interface import BaseMemory
+from app.memory.base import BaseMemory
 from app.agents.agent_loop import SalesAgentLoop
 from app.services.eval_service import EvalService
 from app.tools.catalog_tool import search_catalog

@@ -1,7 +1,7 @@
 # calls sqlite_impl.py memory layer to retrieve stored facts about the user
 
 from sqlalchemy.orm import Session
-from app.memory.interface import BaseMemory
+from app.memory.base import BaseMemory
 
 def get_user_memory(user_id: str, db: Session, memory_backend: BaseMemory) -> str:
     """

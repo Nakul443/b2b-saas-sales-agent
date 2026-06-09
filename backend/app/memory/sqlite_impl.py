@@ -3,7 +3,7 @@
 
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from app.memory.interface import BaseMemory
+from app.memory.base import BaseMemory
 from app.db.models import User, ChatHistory, UserFact
 
 class SQLiteMemory(BaseMemory):

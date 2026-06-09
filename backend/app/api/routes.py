@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.db.database import get_db
-from app.models.schemas import ChatMessageRequest, ChatAgentResponse, ChatHistoryItem
+from app.models.schemas import ChatMessageRequest, ChatAgentResponse
 from app.memory.sqlite_impl import SQLiteMemory
 from app.services.chat_service import ChatService
 from app.tools.catalog_tool import search_catalog
