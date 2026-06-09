@@ -1,9 +1,9 @@
 # "brain" of the AI agent loop, responsible for managing the conversation flow and tool execution
 
-# looks at the messaages, and takes the tools from the tools folder
+# looks at the messages, and takes the tools from the tools folder
 # and runs them, then feeds the results back in and gets a final answer
 
-# Core Brain Loop: handles multi-turn conversations with OpenAI
+# Core Brain Loop: handles multi-turn conversations with Google Gemini via OpenAI SDK
 # declares available system tools and executes them when requested by the model
 
 import os
@@ -17,7 +17,11 @@ class SalesAgentLoop:
     Manages the core LLM conversation choices and function tool execution runs.
     """
     def __init__(self):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        # Point the OpenAI SDK to use Google's free API gateway endpoint
+        self.client = OpenAI(
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+            api_key=os.getenv("GEMINI_API_KEY")
+        )
 
     def run(self, system_instruction: str, history_messages: list, user_id: str, db: any, memory_backend: any) -> tuple:
         """
@@ -56,8 +60,9 @@ class SalesAgentLoop:
             }
         ]
 
+        # First pass execution to see if Gemini requests any tools
         response = self.client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gemini-2.5-flash",
             messages=messages,
             tools=tools_config,
             tool_choice="auto"
@@ -94,8 +99,9 @@ class SalesAgentLoop:
                         "content": tool_output
                     })
 
+            # Second pass completion generation with tool results injected
             second_response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gemini-2.5-flash",
                 messages=messages
             )
             raw_text = second_response.choices[0].message.content

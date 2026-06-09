@@ -10,7 +10,7 @@ from app.models.schemas import EvaluationBlock
 
 class EvalService:
     """
-    Orchestrates response evaluation using OpenAI's Structured Outputs (JSON Schema parsing)
+    Orchestrates response evaluation using Gemini's Structured Outputs (JSON Schema parsing)
     to guarantee strict datatypes mapping perfectly to the assignment rubric.
     """
 
@@ -22,7 +22,7 @@ class EvalService:
 
     def evaluate_response(self, user_message: str, agent_response: str, catalog_context: str, memory_context: str) -> EvaluationBlock:
         """
-        Calls OpenAI to compute self-evaluation scores based on groundedness, relevance, and confidence.
+        Calls Gemini to compute self-evaluation scores based on groundedness, relevance, and confidence.
         
         Args:
             user_message: The original prompt sent by the user.
