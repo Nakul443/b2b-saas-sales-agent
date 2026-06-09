@@ -23,7 +23,6 @@ class SalesAgentLoop:
         """
         Runs the message loop. Returns (cleaned_response_text, tools_called_list, newly_extracted_fact_string)
         """
-        # combining instructions and conversation history into a single payload stream
         messages = [{"role": "system", "content": system_instruction}] + history_messages
 
         tools_config = [
@@ -73,7 +72,9 @@ class SalesAgentLoop:
             for tool_call in assistant_message.tool_calls:
                 function_name = tool_call.function.name
                 function_args = json.loads(tool_call.function.arguments)
-                tools_called.append(function_name)
+                
+                if function_name not in tools_called:
+                    tools_called.append(function_name)
 
                 if function_name == "search_catalog":
                     tool_output = search_catalog(query=function_args.get("query"))
