@@ -1,4 +1,4 @@
-# LIVE LINK: 
+# LIVE LINK: b2b-saas-sales-agent-production.up.railway.app
 
 # Persistent Sales Assistant Agent
 
@@ -214,7 +214,7 @@ These two `curl` commands demonstrate that the agent carries context across comp
 ### Call 1 — Establish context (Session A)
 
 ```bash
-curl -X POST "https://YOUR-RAILWAY-URL.railway.app/chat/user_demo_01" \
+curl -X POST "https://b2b-saas-sales-agent-production.up.railway.app/chat/user_demo_01" \
   -H "Content-Type: application/json" \
   -d '{
     "message": "We have an engineering team of 45 people and we absolutely need SAML SSO and audit logs.",
@@ -227,7 +227,7 @@ Expected: The agent calls `search_catalog` to find plans with SSO + audit logs, 
 ### Call 2 — Recall context (Session B, different session_id)
 
 ```bash
-curl -X POST "https://YOUR-RAILWAY-URL.railway.app/chat/user_demo_01" \
+curl -X POST "https://b2b-saas-sales-agent-production.up.railway.app/chat/user_demo_01" \
   -H "Content-Type: application/json" \
   -d '{
     "message": "Does that plan also cover our compliance needs if we scale to 200 people?",
@@ -241,11 +241,11 @@ Expected: The agent calls `get_user_memory` and retrieves the prior session's co
 
 ## 7. Live URL
 
-**Base URL:** `https://YOUR-RAILWAY-URL.railway.app`
+**Base URL:** `https://b2b-saas-sales-agent-production.up.railway.app`
 
-**Health check:** `https://YOUR-RAILWAY-URL.railway.app/health`
+**Health check:** `https://b2b-saas-sales-agent-production.up.railway.app/health`
 
-**Interactive docs:** `https://YOUR-RAILWAY-URL.railway.app/docs`
+**Interactive docs:** `https://b2b-saas-sales-agent-production.up.railway.app/docs`
 
 > Deployed on [Railway](https://railway.app). The SQLite database is persisted via a Railway volume mount so memory survives redeploys.
 
