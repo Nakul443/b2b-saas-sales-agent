@@ -1,5 +1,5 @@
 # class that hooks up the SQLAlchemy models to save and retrieve data
-# from the SQLite database file (sales_agent.db) in this case
+# from the SQLite database file (sales_agent.db in this case)
 
 from typing import List, Optional
 from sqlalchemy.orm import Session
