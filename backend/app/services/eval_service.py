@@ -1,10 +1,11 @@
-# this file will take AI agen't generated answer
+# this file will take AI agent's generated answer
 # will analyze the context (product catalog and user memory)
 # and then decide which tool to call and how to call it
 
+# Evaluation Workflow Manager: Acts as a service wrapper around our
+# dedicated agent evaluator, adding programmatic validation thresholds.
 
-import os
-from openai import OpenAI
+from app.agents.evaluator import ResponseEvaluator
 from app.models.schemas import EvaluationBlock
 
 class EvalService:
@@ -14,7 +15,9 @@ class EvalService:
     """
 
     def __init__(self):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        # Bind the isolated quality assessment brain loop
+        self.evaluator = ResponseEvaluator()
+        # Standard threshold for programmatic human auditing flag alerts
         self.confidence_threshold = 0.70
 
     def evaluate_response(self, user_message: str, agent_response: str, catalog_context: str, memory_context: str) -> EvaluationBlock:
@@ -29,53 +32,16 @@ class EvalService:
         Returns:
             An instantiated EvaluationBlock Pydantic object.
         """
-        system_instruction = (
-            "You are an objective AI quality auditing system. Your task is to evaluate a sales assistant's response "
-            "against the provided product catalog context and known user facts. You must assign strict numerical scores "
-            "between 0.0 and 1.0 and provide rigorous reasoning.\n\n"
-            "Evaluation Criteria:\n"
-            "1. groundedness: Is the response factually supported by the catalog context? Deduced scores must fall if information is hallucinated or absent from the file.\n"
-            "2. relevance: Does the response directly answer the user's specific query and apply their historical profile context appropriately?\n"
-            "3. confidence: What is your internal certainty about the accuracy and professionalism of the answer?\n"
-            "4. flagged: Set to true if the confidence score falls below 0.70 or if obvious inaccuracies are present.\n"
-            "5. reasoning: A concise, technical explanation detailing exactly why these specific scores were awarded."
+        # Forward contexts directly to the isolated auditing agent
+        eval_result = self.evaluator.score_response(
+            user_message=user_message,
+            agent_response=agent_response,
+            catalog_context=catalog_context,
+            memory_context=memory_context
         )
+        
+        # Enforce programmatic fallback threshold validation parameters
+        if eval_result.confidence < self.confidence_threshold:
+            eval_result.flagged = True
 
-        user_content = (
-            f"--- PRODUCT CATALOG CONTEXT ---\n{catalog_context}\n\n"
-            f"--- USER PROFILE MEMORY CONTEXT ---\n{memory_context}\n\n"
-            f"--- USER ORIGINAL INPUT ---\n{user_message}\n\n"
-            f"--- ASSISTANT DRAFT RESPONSE ---\n{agent_response}\n\n"
-            "Analyze the information above and return the structured self-evaluation block scores."
-        )
-
-        try:
-            # OpenAI's method for forcing structured JSON output mapping to the pydantic schema
-            completion = self.client.beta.chat.completions.parse(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": system_instruction},
-                    {"role": "user", "content": user_content}
-                ],
-                response_format=EvaluationBlock, # Forces the LLM to output JSON matching the Pydantic schema structure
-                temperature=0.0 # Force deterministic output scores
-                # temperature=1 would have been for more diverse/creative output
-            )
-
-            eval_result = completion.choices[0].message.parsed
-            
-            # double check the confidence score threshold programmatically
-            if eval_result.confidence < self.confidence_threshold:
-                eval_result.flagged = True
-
-            return eval_result
-
-        except Exception as e:
-            # Fallback block configuration to prevent the API route from crashing if an upstream network error occurs
-            return EvaluationBlock(
-                groundedness=0.5,
-                relevance=0.5,
-                confidence=0.5,
-                flagged=True,
-                reasoning=f"Automated evaluation processing exception intercepted safely: {str(e)}"
-            )
+        return eval_result
