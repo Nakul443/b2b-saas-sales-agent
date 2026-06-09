@@ -37,3 +37,12 @@ backend/app/db/database.db
 *.swp
 *~
 .DS_Store
+
+
+# SQLite database files
+*.sqlite
+*.db
+*.sqlite3
+
+# Alembic specific environment files (if you store sensitive info there)
+alembic.ini

@@ -1,5 +1,3 @@
-# LIVE LINK: [b2b-saas-sales-agent-production.up.railway.app](https://b2b-saas-sales-agent-production.up.railway.app)
-
 # Persistent Sales Assistant Agent
 
 A production-grade, stateful AI Sales Assistant API built with **FastAPI** and **SQLAlchemy**. Features cross-session memory persistence, autonomous catalog tool execution, and real-time LLM self-evaluation scoring on every response.
